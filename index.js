@@ -1,12 +1,10 @@
-const redux = require('redux')
-const createStore = redux.createStore
-const bindActionCreators = redux.bindActionCreators
-const combineReducers = redux.combineReducers
+const { createStore, applyMiddleware, bindActionCreators, combineReducers } =  require("redux");
+const { logger } = require("redux-logger");
 
 const CAKE_ORDERED = "CAKE_ORDERED";
-const CAKE_RESTOCKED = 'CAKE_RESTOCKED'
-const ICECREAM_ORDERED = 'ICECREAM_ORDERED'
-const ICECREAM_RESTOCKED = 'ICECREAM_RESTOCKED'
+const CAKE_RESTOCKED = "CAKE_RESTOCKED";
+const ICECREAM_ORDERED = "ICECREAM_ORDERED";
+const ICECREAM_RESTOCKED = "ICECREAM_RESTOCKED";
 
 function orderCake(qty = 1) {
   return {
@@ -16,10 +14,10 @@ function orderCake(qty = 1) {
 }
 
 function restockCake(qty = 1) {
-    return {
-      type: CAKE_RESTOCKED,
-      payload: qty
-    }
+  return {
+    type: CAKE_RESTOCKED,
+    payload: qty,
+  };
 }
 
 function orderIceCream(qty = 1) {
@@ -118,11 +116,12 @@ const rootReducer = combineReducers({
 });
 
 // const store = createStore(reducer)
-const store = createStore(rootReducer)
-console.log('Initial State ', store.getState())
-const unsubscribe = store.subscribe(() => {
-  console.log('Updated State ', store.getState())
-})
+const store = createStore(rootReducer, applyMiddleware(logger));
+console.log("Initial State ", store.getState());
+// const unsubscribe = store.subscribe(() => {
+//   console.log('Updated State ', store.getState())
+// })
+const unsubscribe = store.subscribe(() => {});
 
 // store.dispatch(orderCake())
 // store.dispatch(orderCake())
@@ -137,8 +136,8 @@ actions.orderCake();
 actions.orderCake();
 actions.orderCake();
 actions.restockCake(3);
-actions.orderIceCream()
-actions.orderIceCream()
-actions.restockIceCream(2)
+actions.orderIceCream();
+actions.orderIceCream();
+actions.restockIceCream(2);
 
-unsubscribe()
+unsubscribe();
